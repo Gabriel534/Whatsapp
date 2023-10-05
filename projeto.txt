@@ -1,0 +1,1 @@
+Criar uma interface de conversas pelo pc centralizado por um host com banco de dados próprio

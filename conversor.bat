@@ -1,0 +1,1 @@
+pyside6-uic.exe .\interface.ui -o interface.py
