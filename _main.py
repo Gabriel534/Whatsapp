@@ -1,9 +1,9 @@
 from typing import Optional
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,
-    QScrollArea)
+    QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout,
+    QHBoxLayout, QScrollArea)
 from variaveis import ICON
 from interface import Ui_MainWindow
 
@@ -23,7 +23,10 @@ class Main(QMainWindow, Ui_MainWindow):
         layoutChat = QVBoxLayout()
         layoutChat.setAlignment(Qt.AlignmentFlag.AlignTop)
         layoutChat.setSizeConstraint(layoutChat.SizeConstraint.SetMaximumSize)
-        layoutChat.addWidget(ItemChat("as", "sc", "sfs"))
+
+        # Teste de itemChat
+        layoutChat.addWidget(ItemChat("Gabriel Sampaio Santos", "sc", "sfs"))
+
         self.Chats.setLayout(layoutChat)
 
         layoutConversa = QVBoxLayout()
@@ -38,8 +41,15 @@ class ItemChat(QWidget):
         super().__init__()
         _layout = QHBoxLayout()
         self.setLayout(_layout)
+        self.setWindowTitle("Whatsapp2")
 
-        button = QPushButton("Gabriel Sampaio Santos")
+        # Definir tamanho mínimo do nome
+        if len(nome) > 22:
+            nome = nome[:22]
+
+        # Texto do item pra entrar na conversa
+        button = QPushButton(nome).addAction(QLabel("A"))
+
         button.setCheckable(True)
         button.setStyleSheet("""
             QPushButton {
