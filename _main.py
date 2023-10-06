@@ -4,7 +4,7 @@ from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,
     QScrollArea)
-from Whatsapp.variaveis import ICON
+from variaveis import ICON
 from interface import Ui_MainWindow
 
 
