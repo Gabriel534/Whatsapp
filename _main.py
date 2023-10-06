@@ -3,22 +3,25 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout,
-    QHBoxLayout, QScrollArea)
+    QHBoxLayout, QScrollArea, QStatusBar)
 from variaveis import ICON
 from interface import Ui_MainWindow
 
 
 class Main(QMainWindow, Ui_MainWindow):
-    def __init__(self) -> None:
+    def __init__(self, dados: dict) -> None:
         super().__init__()
         self.setupUi(self)
+        self.dados = dados
         # Remove a moldura do scroll area
         # self.Chats.setFrameShape(QScrollArea.Shape.NoFrame)
         # self.Chats.setWidgetResizable(True)
 
-        self.User.setText("Usuário")
+        self.User.setText(self.dados["Login"])
         self.User.setIcon(QIcon(str(ICON)))
         self.User.setIconSize(QSize(40, 40))
+
+        self.setStatusBar(QStatusBar())
 
         layoutChat = QVBoxLayout()
         layoutChat.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -37,6 +40,10 @@ class Main(QMainWindow, Ui_MainWindow):
 
 
 class ItemChat(QWidget):
+    """
+    É o item clickável que direciona pra conversa de cada contato
+    """
+
     def __init__(self, nome: str, conversa: str, horario: str) -> None:
         super().__init__()
         _layout = QHBoxLayout()
@@ -48,7 +55,9 @@ class ItemChat(QWidget):
             nome = nome[:22]
 
         # Texto do item pra entrar na conversa
-        button = QPushButton(nome).addAction(QLabel("A"))
+        button = QPushButton(nome)
+
+        button.setStatusTip(horario)
 
         button.setCheckable(True)
         button.setStyleSheet("""
