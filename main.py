@@ -5,27 +5,24 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QLineEdit, QLabel,
     QPushButton, QHBoxLayout, QStatusBar)
 from PySide6.QtGui import QIcon, QKeyEvent
-from variaveis import TAMANHO_MAXIMO_LOGIN, TAMANHO_MAXIMO_SENHA, ICON, SERVERIP, SERVERPORT
+from variaveis import (TAMANHO_MAXIMO_LOGIN, TAMANHO_MAXIMO_SENHA,
+                       ICON, SERVERIP, SERVERPORT, ICON_VOLTAR)
 from login import login
 import socket
 from _main import Main
 from telaCadastro import Ui_MainWindow
-
-# Classe da tela de cadastro
-
-
-class Cadastrar(QMainWindow, Ui_MainWindow):
-    def __init__(self) -> None:
-        super().__init__()
-        self.setupUi(self)
-        self.setFixedSize(self.size())
 
 
 class UserLogin(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        self.setStatusBar(QStatusBar())
+        statusBar = QStatusBar()
+        statusBar.setSizeGripEnabled(False)
+
+        self.setStatusBar(statusBar)
+        self.statusLabel = QLabel()
+        self.statusBar().addWidget(self.statusLabel)
 
         central = QWidget()
         self._layout = QVBoxLayout()
@@ -59,19 +56,31 @@ class UserLogin(QMainWindow):
         central.setLayout(self._layout)
         self.setCentralWidget(central)
 
+        self.adjustSize()
+        self.setFixedSize(self.size())
+
     def logar(self):
         if self.lineEditLogin.text() == "" or self.lineEditSenha.text() == "":
-            self.statusBar().setStatusTip("Login e/ou senha não preenchidos")
+            self.statusLabel.setText("Login e/ou senha não preenchidos")
             return
         cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        cliente.connect((SERVERIP, SERVERPORT))
+
+        try:
+            cliente.connect((SERVERIP, SERVERPORT))
+        except ConnectionRefusedError:
+            self.statusLabel.setText("Erro ao se comunicar com o servidor")
+            return
+        except ConnectionError:
+            self.statusLabel.setText("Erro ao se comunicar com o servidor")
+            return
+
         dados = login(cliente, self.lineEditLogin.text(),
                       self.lineEditSenha.text())
         cliente.close()
         if dados is None:
-            self.statusBar().setStatusTip("Erro! Login ou senha incorretos")
+            self.statusLabel.setText("Erro! Login ou senha incorretos")
         elif dados == 0:
-            self.statusBar().setStatusTip("Erro ao se comunicar com o servidor")
+            self.statusLabel.setText("Erro ao se comunicar com o servidor")
         else:
             self.main = Main(dados)  # type: ignore
             self.main.show()
@@ -88,9 +97,9 @@ class UserLogin(QMainWindow):
         self.deleteLater()
 
     def cadastrar(self):
-        self.telaCadastro = Cadastrar()
+        self.telaCadastro = Cadastrar(self)
         self.telaCadastro.show()
-        self.fecharJanela()
+        self.setHidden(True)
 
 # Classe que permite o line edit da senha cadastrar ao clickar em enter
 
@@ -105,6 +114,23 @@ class LineEditSenha(QLineEdit):
         if arg__1.key() in [KEYS.Key_Enter, KEYS.Key_Return]:
             self.parents.logar()
         return super().keyPressEvent(arg__1)
+
+# Classe da tela de cadastro
+
+
+class Cadastrar(QMainWindow, Ui_MainWindow):
+    def __init__(self, parent: UserLogin) -> None:
+        super().__init__()
+        iconVoltar = QIcon(str(ICON_VOLTAR))
+        self.setupUi(self)
+
+        self.setWindowTitle("WhatsApp2")
+        self.setWindowIcon(QIcon(str(ICON)))
+
+        self.setFixedSize(self.size())
+        self.pushButtonVoltar.setIcon(iconVoltar)
+        self.pushButtonVoltar.clicked.connect(lambda: parent.setHidden(False))
+        self.pushButtonVoltar.clicked.connect(self.deleteLater)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from pathlib import Path
 MAIN = Path(__file__).parent.resolve()
 DATA = MAIN / "data"
 ICON = DATA / "icon.jpg"
+ICON_VOLTAR = DATA / "voltar.png"
 
 TAMANHO_MAXIMO_LOGIN = 30
 TAMANHO_MAXIMO_SENHA = 30

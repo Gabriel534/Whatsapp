@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -44,7 +44,19 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_8 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.label = QLabel(self.centralwidget)
+        self.widget_7 = QWidget(self.centralwidget)
+        self.widget_7.setObjectName(u"widget_7")
+        self.horizontalLayout = QHBoxLayout(self.widget_7)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.pushButtonVoltar = QPushButton(self.widget_7)
+        self.pushButtonVoltar.setObjectName(u"pushButtonVoltar")
+        self.pushButtonVoltar.setMaximumSize(QSize(40, 16777215))
+        self.pushButtonVoltar.setAutoDefault(False)
+        self.pushButtonVoltar.setFlat(False)
+
+        self.horizontalLayout.addWidget(self.pushButtonVoltar)
+
+        self.label = QLabel(self.widget_7)
         self.label.setObjectName(u"label")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -54,7 +66,10 @@ class Ui_MainWindow(object):
         self.label.setMaximumSize(QSize(424745, 20))
         self.label.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_8.addWidget(self.label)
+        self.horizontalLayout.addWidget(self.label)
+
+
+        self.verticalLayout_8.addWidget(self.widget_7)
 
         self.widget_2 = QWidget(self.centralwidget)
         self.widget_2.setObjectName(u"widget_2")
@@ -202,12 +217,16 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.pushButtonVoltar.setDefault(False)
+
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Cadastro", None))
+        self.pushButtonVoltar.setText("")
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Cadastro                       ", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Nome:", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Telefone:", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Email:", None))
