@@ -6,7 +6,8 @@ from PySide6.QtWidgets import (
     QPushButton, QHBoxLayout, QStatusBar)
 from PySide6.QtGui import QIcon, QKeyEvent
 from variaveis import (TAMANHO_MAXIMO_LOGIN, TAMANHO_MAXIMO_SENHA,
-                       ICON, SERVERIP, SERVERPORT, ICON_VOLTAR)
+                       ICON, SERVERIP, SERVERPORT, ICON_VOLTAR,
+                       RESPOSTA_SOLICITACAO_LOGIN)
 from login import login
 import socket
 from _main import Main
@@ -73,9 +74,12 @@ class UserLogin(QMainWindow):
         except ConnectionError:
             self.statusLabel.setText("Erro ao se comunicar com o servidor")
             return
-
-        dados = login(cliente, self.lineEditLogin.text(),
-                      self.lineEditSenha.text())
+        try:
+            dados = login(cliente, self.lineEditLogin.text(),
+                          self.lineEditSenha.text())
+        except ConnectionRefusedError:
+            self.statusLabel.setText("Erro na validação do cliente")
+            return
         cliente.close()
         if dados is None:
             self.statusLabel.setText("Erro! Login ou senha incorretos")
