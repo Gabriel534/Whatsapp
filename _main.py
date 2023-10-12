@@ -11,6 +11,9 @@ from interface import Ui_MainWindow
 class Main(QMainWindow, Ui_MainWindow):
     def __init__(self, dados: dict) -> None:
         super().__init__()
+
+        self.setWindowTitle("Whatsapp2")
+
         self.setupUi(self)
         self.dados = dados
         # Remove a moldura do scroll area
@@ -86,7 +89,7 @@ class ItemChat(QWidget):
 if __name__ == "__main__":
     from sys import argv
     app = QApplication(argv)
-    window = Main()
+    window = Main({"Login": "Teste"})
     window.show()
     app.setWindowIcon(QIcon(str(ICON)))
     app.exec()

@@ -8,7 +8,7 @@ from PySide6.QtGui import QIcon, QKeyEvent
 from variaveis import (TAMANHO_MAXIMO_LOGIN, TAMANHO_MAXIMO_SENHA,
                        ICON, SERVERIP, SERVERPORT, ICON_VOLTAR,
                        RESPOSTA_SOLICITACAO_LOGIN)
-from login import login
+from login import login, cadastrar
 import socket
 from _main import Main
 from telaCadastro import Ui_MainWindow
@@ -64,27 +64,18 @@ class UserLogin(QMainWindow):
         if self.lineEditLogin.text() == "" or self.lineEditSenha.text() == "":
             self.statusLabel.setText("Login e/ou senha não preenchidos")
             return
-        cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
         try:
-            cliente.connect((SERVERIP, SERVERPORT))
-        except ConnectionRefusedError:
-            self.statusLabel.setText("Erro ao se comunicar com o servidor")
-            return
-        except ConnectionError:
-            self.statusLabel.setText("Erro ao se comunicar com o servidor")
-            return
-        try:
-            dados = login(cliente, self.lineEditLogin.text(),
-                          self.lineEditSenha.text())
+            dados = login(self.lineEditLogin.text(),
+                          self.lineEditSenha.text(), self.statusLabel)
         except ConnectionRefusedError:
             self.statusLabel.setText("Erro na validação do cliente")
             return
-        cliente.close()
         if dados is None:
-            self.statusLabel.setText("Erro! Login ou senha incorretos")
+            self.statusLabel.setText("Login incorreto!")
         elif dados == 0:
             self.statusLabel.setText("Erro ao se comunicar com o servidor")
+        elif dados == 1:
+            self.statusLabel.setText("Senha incorreta!")
         else:
             self.main = Main(dados)  # type: ignore
             self.main.show()
@@ -124,9 +115,21 @@ class LineEditSenha(QLineEdit):
 
 class Cadastrar(QMainWindow, Ui_MainWindow):
     def __init__(self, parent: UserLogin) -> None:
+
         super().__init__()
-        iconVoltar = QIcon(str(ICON_VOLTAR))
         self.setupUi(self)
+
+        iconVoltar = QIcon(str(ICON_VOLTAR))
+        self.parents = parent
+
+        # Instanciando a statusBar
+        self.statusBarWidget = QStatusBar()
+        self.setStatusBar(self.statusBarWidget)
+        self.statusBar().setSizeGripEnabled(False)
+
+        # Colocando uma label no statusBar
+        self.statusCadastroLabel = QLabel()
+        self.statusBar().addWidget(self.statusCadastroLabel)
 
         self.setWindowTitle("WhatsApp2")
         self.setWindowIcon(QIcon(str(ICON)))
@@ -135,6 +138,74 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         self.pushButtonVoltar.setIcon(iconVoltar)
         self.pushButtonVoltar.clicked.connect(lambda: parent.setHidden(False))
         self.pushButtonVoltar.clicked.connect(self.deleteLater)
+
+        self.pushButtonCadastrar.clicked.connect(self.cadastrar)
+
+    def cadastrar(self) -> None:
+        """
+        Pegas as informações de cadastro e envia ao servidor, além de validar 
+        as informações dos campos
+        """
+        dados: dict[str, QLineEdit]
+        dados = {"nome": self.lineEditNome,
+                 "telefone": self.lineEditTelefone,
+                 "email": self.lineEditEmail,
+                 "login": self.lineEditLogin,
+                 "senha": self.lineEditSenha,
+                 "senha2": self.lineEditSenha2}
+
+        if not self.validaDados(dados):
+            return
+
+        print("Implementar validação dos dados")
+
+        # Envio das informações ao servidor
+        resp = cadastrar(self.lineEditNome.text(),
+                         self.lineEditTelefone.text(),
+                         self.lineEditEmail.text(),
+                         self.lineEditLogin.text(),
+                         self.lineEditSenha.text(), self.statusCadastroLabel)
+
+        if resp == 0:
+            self.statusCadastroLabel.setText("Usuário já cadastrado")
+        elif resp == 1:
+            self.statusCadastroLabel.setText("Cadastro bem sucedido")
+        elif resp == 2:
+            self.statusCadastroLabel.setText(
+                "Erro de conexão")
+
+    def validaDados(self, dados: dict[str, QLineEdit]) -> bool:
+        """
+        Valida os dados recebidos dos line edit
+        Se a validação for verdadeira, ele retorna true
+        Caso não for verdadeira, retorna false e expõe o erro no statusLabel 
+        do statusBar
+        """
+
+        naoPreenchidoBool: bool = False
+
+        for key, value in dados.items():
+            if key == "telefone":
+                continue
+            if value.text() == "":
+                naoPreenchidoBool = True
+                getattr(self, "label" + key.capitalize()
+                        ).setStyleSheet("color: red;")
+            else:
+                getattr(self, "label" + key.capitalize()
+                        ).setStyleSheet("color: black;")
+
+        if naoPreenchidoBool:
+            self.statusCadastroLabel.setText("Há dados não preenchidos")
+            return False
+
+        if dados["senha"].text() != dados["senha2"].text():
+            self.labelSenha2.setStyleSheet("color: red;")
+            self.labelSenha.setStyleSheet("color: red;")
+            self.statusCadastroLabel.setText("As duas senhas não são iguais")
+            return False
+
+        return True
 
 
 if __name__ == "__main__":

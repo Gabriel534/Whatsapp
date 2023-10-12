@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>338</width>
-    <height>529</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,9 +93,9 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="labelNome">
          <property name="text">
-          <string>Nome:</string>
+          <string>Nome*</string>
          </property>
         </widget>
        </item>
@@ -122,7 +122,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QLabel" name="label_7">
+        <widget class="QLabel" name="labelTelefone">
          <property name="text">
           <string>Telefone:</string>
          </property>
@@ -151,14 +151,14 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="labelEmail">
          <property name="text">
-          <string>Email:</string>
+          <string>Email*</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEditTelefone_2">
+        <widget class="QLineEdit" name="lineEditEmail">
          <property name="maximumSize">
           <size>
            <width>300</width>
@@ -180,9 +180,9 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="labelLogin">
          <property name="text">
-          <string>Login:</string>
+          <string>Login*</string>
          </property>
         </widget>
        </item>
@@ -209,9 +209,9 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <widget class="QLabel" name="label_8">
+        <widget class="QLabel" name="labelSenha">
          <property name="text">
-          <string>Senha:</string>
+          <string>Senha*</string>
          </property>
         </widget>
        </item>
@@ -238,9 +238,9 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="labelSenha2">
          <property name="text">
-          <string>Repita sua senha:</string>
+          <string>Repita sua senha*</string>
          </property>
         </widget>
        </item>

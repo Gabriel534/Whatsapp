@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(338, 529)
+        MainWindow.resize(338, 569)
         MainWindow.setStyleSheet(u"QPushButton {\n"
 "                background-color: #f0f0f0;\n"
 "                border: 1px solid #d3d3d3;\n"
@@ -77,10 +77,10 @@ class Ui_MainWindow(object):
         self.widget_2.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QVBoxLayout(self.widget_2)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label_3 = QLabel(self.widget_2)
-        self.label_3.setObjectName(u"label_3")
+        self.labelNome = QLabel(self.widget_2)
+        self.labelNome.setObjectName(u"labelNome")
 
-        self.verticalLayout_2.addWidget(self.label_3)
+        self.verticalLayout_2.addWidget(self.labelNome)
 
         self.lineEditNome = QLineEdit(self.widget_2)
         self.lineEditNome.setObjectName(u"lineEditNome")
@@ -97,10 +97,10 @@ class Ui_MainWindow(object):
         self.widget_5.setSizePolicy(sizePolicy)
         self.verticalLayout_6 = QVBoxLayout(self.widget_5)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_7 = QLabel(self.widget_5)
-        self.label_7.setObjectName(u"label_7")
+        self.labelTelefone = QLabel(self.widget_5)
+        self.labelTelefone.setObjectName(u"labelTelefone")
 
-        self.verticalLayout_6.addWidget(self.label_7)
+        self.verticalLayout_6.addWidget(self.labelTelefone)
 
         self.lineEditTelefone = QLineEdit(self.widget_5)
         self.lineEditTelefone.setObjectName(u"lineEditTelefone")
@@ -117,16 +117,16 @@ class Ui_MainWindow(object):
         self.widget_3.setSizePolicy(sizePolicy)
         self.verticalLayout_4 = QVBoxLayout(self.widget_3)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.label_5 = QLabel(self.widget_3)
-        self.label_5.setObjectName(u"label_5")
+        self.labelEmail = QLabel(self.widget_3)
+        self.labelEmail.setObjectName(u"labelEmail")
 
-        self.verticalLayout_4.addWidget(self.label_5)
+        self.verticalLayout_4.addWidget(self.labelEmail)
 
-        self.lineEditTelefone_2 = QLineEdit(self.widget_3)
-        self.lineEditTelefone_2.setObjectName(u"lineEditTelefone_2")
-        self.lineEditTelefone_2.setMaximumSize(QSize(300, 16777215))
+        self.lineEditEmail = QLineEdit(self.widget_3)
+        self.lineEditEmail.setObjectName(u"lineEditEmail")
+        self.lineEditEmail.setMaximumSize(QSize(300, 16777215))
 
-        self.verticalLayout_4.addWidget(self.lineEditTelefone_2)
+        self.verticalLayout_4.addWidget(self.lineEditEmail)
 
 
         self.verticalLayout_8.addWidget(self.widget_3)
@@ -137,10 +137,10 @@ class Ui_MainWindow(object):
         self.widget_4.setSizePolicy(sizePolicy)
         self.verticalLayout_5 = QVBoxLayout(self.widget_4)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.label_6 = QLabel(self.widget_4)
-        self.label_6.setObjectName(u"label_6")
+        self.labelLogin = QLabel(self.widget_4)
+        self.labelLogin.setObjectName(u"labelLogin")
 
-        self.verticalLayout_5.addWidget(self.label_6)
+        self.verticalLayout_5.addWidget(self.labelLogin)
 
         self.lineEditLogin = QLineEdit(self.widget_4)
         self.lineEditLogin.setObjectName(u"lineEditLogin")
@@ -157,10 +157,10 @@ class Ui_MainWindow(object):
         self.widget_6.setSizePolicy(sizePolicy)
         self.verticalLayout_7 = QVBoxLayout(self.widget_6)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.label_8 = QLabel(self.widget_6)
-        self.label_8.setObjectName(u"label_8")
+        self.labelSenha = QLabel(self.widget_6)
+        self.labelSenha.setObjectName(u"labelSenha")
 
-        self.verticalLayout_7.addWidget(self.label_8)
+        self.verticalLayout_7.addWidget(self.labelSenha)
 
         self.lineEditSenha = QLineEdit(self.widget_6)
         self.lineEditSenha.setObjectName(u"lineEditSenha")
@@ -177,10 +177,10 @@ class Ui_MainWindow(object):
         self.widget.setSizePolicy(sizePolicy)
         self.verticalLayout = QVBoxLayout(self.widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label_2 = QLabel(self.widget)
-        self.label_2.setObjectName(u"label_2")
+        self.labelSenha2 = QLabel(self.widget)
+        self.labelSenha2.setObjectName(u"labelSenha2")
 
-        self.verticalLayout.addWidget(self.label_2)
+        self.verticalLayout.addWidget(self.labelSenha2)
 
         self.lineEditSenha2 = QLineEdit(self.widget)
         self.lineEditSenha2.setObjectName(u"lineEditSenha2")
@@ -227,12 +227,12 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.pushButtonVoltar.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Cadastro                       ", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Nome:", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Telefone:", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Email:", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Login:", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Senha:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Repita sua senha:", None))
+        self.labelNome.setText(QCoreApplication.translate("MainWindow", u"Nome*", None))
+        self.labelTelefone.setText(QCoreApplication.translate("MainWindow", u"Telefone:", None))
+        self.labelEmail.setText(QCoreApplication.translate("MainWindow", u"Email*", None))
+        self.labelLogin.setText(QCoreApplication.translate("MainWindow", u"Login*", None))
+        self.labelSenha.setText(QCoreApplication.translate("MainWindow", u"Senha*", None))
+        self.labelSenha2.setText(QCoreApplication.translate("MainWindow", u"Repita sua senha*", None))
         self.pushButtonCadastrar.setText(QCoreApplication.translate("MainWindow", u"                                      Cadastrar", None))
     # retranslateUi
 
