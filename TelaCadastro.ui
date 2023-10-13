@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>338</width>
-    <height>569</height>
+    <height>501</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -124,7 +124,7 @@
        <item>
         <widget class="QLabel" name="labelTelefone">
          <property name="text">
-          <string>Telefone:</string>
+          <string>Telefone</string>
          </property>
         </widget>
        </item>
@@ -135,6 +135,9 @@
            <width>300</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="inputMask">
+          <string>(00) 0000-0000</string>
          </property>
         </widget>
        </item>
@@ -159,35 +162,6 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lineEditEmail">
-         <property name="maximumSize">
-          <size>
-           <width>300</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget_4" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
-        <widget class="QLabel" name="labelLogin">
-         <property name="text">
-          <string>Login*</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEditLogin">
          <property name="maximumSize">
           <size>
            <width>300</width>

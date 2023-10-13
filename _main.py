@@ -20,7 +20,7 @@ class Main(QMainWindow, Ui_MainWindow):
         # self.Chats.setFrameShape(QScrollArea.Shape.NoFrame)
         # self.Chats.setWidgetResizable(True)
 
-        self.User.setText(self.dados["Login"])
+        self.User.setText(self.dados["Nome"])
         self.User.setIcon(QIcon(str(ICON)))
         self.User.setIconSize(QSize(40, 40))
 

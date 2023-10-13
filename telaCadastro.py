@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(338, 569)
+        MainWindow.resize(338, 501)
         MainWindow.setStyleSheet(u"QPushButton {\n"
 "                background-color: #f0f0f0;\n"
 "                border: 1px solid #d3d3d3;\n"
@@ -131,26 +131,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addWidget(self.widget_3)
 
-        self.widget_4 = QWidget(self.centralwidget)
-        self.widget_4.setObjectName(u"widget_4")
-        sizePolicy.setHeightForWidth(self.widget_4.sizePolicy().hasHeightForWidth())
-        self.widget_4.setSizePolicy(sizePolicy)
-        self.verticalLayout_5 = QVBoxLayout(self.widget_4)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.labelLogin = QLabel(self.widget_4)
-        self.labelLogin.setObjectName(u"labelLogin")
-
-        self.verticalLayout_5.addWidget(self.labelLogin)
-
-        self.lineEditLogin = QLineEdit(self.widget_4)
-        self.lineEditLogin.setObjectName(u"lineEditLogin")
-        self.lineEditLogin.setMaximumSize(QSize(300, 16777215))
-
-        self.verticalLayout_5.addWidget(self.lineEditLogin)
-
-
-        self.verticalLayout_8.addWidget(self.widget_4)
-
         self.widget_6 = QWidget(self.centralwidget)
         self.widget_6.setObjectName(u"widget_6")
         sizePolicy.setHeightForWidth(self.widget_6.sizePolicy().hasHeightForWidth())
@@ -228,9 +208,9 @@ class Ui_MainWindow(object):
         self.pushButtonVoltar.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Cadastro                       ", None))
         self.labelNome.setText(QCoreApplication.translate("MainWindow", u"Nome*", None))
-        self.labelTelefone.setText(QCoreApplication.translate("MainWindow", u"Telefone:", None))
+        self.labelTelefone.setText(QCoreApplication.translate("MainWindow", u"Telefone", None))
+        self.lineEditTelefone.setInputMask(QCoreApplication.translate("MainWindow", u"(00) 0000-0000", None))
         self.labelEmail.setText(QCoreApplication.translate("MainWindow", u"Email*", None))
-        self.labelLogin.setText(QCoreApplication.translate("MainWindow", u"Login*", None))
         self.labelSenha.setText(QCoreApplication.translate("MainWindow", u"Senha*", None))
         self.labelSenha2.setText(QCoreApplication.translate("MainWindow", u"Repita sua senha*", None))
         self.pushButtonCadastrar.setText(QCoreApplication.translate("MainWindow", u"                                      Cadastrar", None))

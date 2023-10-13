@@ -8,10 +8,10 @@ from PySide6.QtGui import QIcon, QKeyEvent
 from variaveis import (TAMANHO_MAXIMO_LOGIN, TAMANHO_MAXIMO_SENHA,
                        ICON, SERVERIP, SERVERPORT, ICON_VOLTAR,
                        RESPOSTA_SOLICITACAO_LOGIN)
-from login import login, cadastrar
-import socket
+from serverConnecter import login, cadastrar
 from _main import Main
 from telaCadastro import Ui_MainWindow
+import re
 
 
 class UserLogin(QMainWindow):
@@ -36,17 +36,17 @@ class UserLogin(QMainWindow):
         self.setWindowTitle("Whatsapp2")
         self.setMinimumSize(QSize(300, 125))
 
-        self.textLogin = QLabel("Login")
-        self.lineEditLogin = QLineEdit()
-        self.lineEditLogin.setMaxLength(TAMANHO_MAXIMO_LOGIN)
+        self.textEmail = QLabel("Email")
+        self.lineEditEmail = QLineEdit()
+        self.lineEditEmail.setMaxLength(TAMANHO_MAXIMO_LOGIN)
         self.textSenha = QLabel("Senha")
 
         self.lineEditSenha = LineEditSenha(self)
 
         self.lineEditSenha.setMaxLength(TAMANHO_MAXIMO_SENHA)
 
-        self._layout.addWidget(self.textLogin)
-        self._layout.addWidget(self.lineEditLogin)
+        self._layout.addWidget(self.textEmail)
+        self._layout.addWidget(self.lineEditEmail)
         self._layout.addWidget(self.textSenha)
         self._layout.addWidget(self.lineEditSenha)
         self._layout.addLayout(self.layoutButtons)
@@ -61,11 +61,11 @@ class UserLogin(QMainWindow):
         self.setFixedSize(self.size())
 
     def logar(self):
-        if self.lineEditLogin.text() == "" or self.lineEditSenha.text() == "":
+        if self.lineEditEmail.text() == "" or self.lineEditSenha.text() == "":
             self.statusLabel.setText("Login e/ou senha não preenchidos")
             return
         try:
-            dados = login(self.lineEditLogin.text(),
+            dados = login(self.lineEditEmail.text(),
                           self.lineEditSenha.text(), self.statusLabel)
         except ConnectionRefusedError:
             self.statusLabel.setText("Erro na validação do cliente")
@@ -84,8 +84,8 @@ class UserLogin(QMainWindow):
 
     def fecharJanela(self):
         self.layoutButtons.deleteLater()
-        self.textLogin.deleteLater()
-        self.lineEditLogin.deleteLater()
+        self.textEmail.deleteLater()
+        self.lineEditEmail.deleteLater()
         self.textSenha.deleteLater()
         self.lineEditSenha.deleteLater()
         self._layout.deleteLater()
@@ -150,7 +150,6 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         dados = {"nome": self.lineEditNome,
                  "telefone": self.lineEditTelefone,
                  "email": self.lineEditEmail,
-                 "login": self.lineEditLogin,
                  "senha": self.lineEditSenha,
                  "senha2": self.lineEditSenha2}
 
@@ -163,7 +162,6 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         resp = cadastrar(self.lineEditNome.text(),
                          self.lineEditTelefone.text(),
                          self.lineEditEmail.text(),
-                         self.lineEditLogin.text(),
                          self.lineEditSenha.text(), self.statusCadastroLabel)
 
         if resp == 0:
@@ -184,6 +182,7 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
 
         naoPreenchidoBool: bool = False
 
+        # Verifica se todos os dados foram preenchidos
         for key, value in dados.items():
             if key == "telefone":
                 continue
@@ -199,6 +198,14 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
             self.statusCadastroLabel.setText("Há dados não preenchidos")
             return False
 
+        # Verifica se o email é valido
+        expressao = re.compile(r"""^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$""")
+        email = re.findall(expressao, dados["email"].text())
+        if email == [] or len(email) != 1:
+            self.statusCadastroLabel.setText("Email inválido")
+            return False
+
+        # Verifica se as senhas são iguais
         if dados["senha"].text() != dados["senha2"].text():
             self.labelSenha2.setStyleSheet("color: red;")
             self.labelSenha.setStyleSheet("color: red;")

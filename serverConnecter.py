@@ -46,11 +46,11 @@ def autenticarCliente(cliente):
         raise ConnectionRefusedError("Erro na validação do cliente")
 
 
-def login(login: str, senha: str, statusLabel: QLabel | None = None) -> dict | int | None:
-    """ Envia o login e senha se o servidor responder corretamente
+def login(email: str, senha: str, statusLabel: QLabel | None = None) -> dict | int | None:
+    """ Envia o email e senha se o servidor responder corretamente
     Retorna 0 se houve erro na comunicação com o servidor
     retorna 1 caso a senha estar incorreta
-    retorna None caso o login esteja incorreto
+    retorna None caso o email esteja incorreto
     """
 
     cliente = conectar(statusLabel)
@@ -62,12 +62,12 @@ def login(login: str, senha: str, statusLabel: QLabel | None = None) -> dict | i
 
     cliente.send(RESPOSTA_SOLICITACAO_LOGIN.encode())
     if cliente.recv(LARGURA_DADOS).decode() == RESPOSTA_SOLICITACAO_LOGIN:
-        cliente.send(f"\"{login}\" \"{senha}\"".encode())
+        cliente.send(f"\"{email}\" \"{senha}\"".encode())
         resp = cliente.recv(LARGURA_DADOS)
         try:
             resp = resp.decode()  # type: ignore
             if resp == RESPOSTA_LOGIN_NAO_ENCONTRADO:
-                print("Login incorreto")
+                print("Email incorreto")
                 cliente.close()
                 return None
             elif resp == RESPOSTA_SENHA_INCORRETA:
@@ -86,7 +86,7 @@ def login(login: str, senha: str, statusLabel: QLabel | None = None) -> dict | i
 
 
 def cadastrar(nome: str, telefone: str, email: str,
-              login: str, senha: str, statusLabel: QLabel | None = None) -> int:
+              senha: str, statusLabel: QLabel | None = None) -> int:
     """
     Esta função manda uma solicitação ao servidor para o cadastro de um usuário
     Caso o cadastro for mal sucedido, a função retornará 2
@@ -99,14 +99,17 @@ def cadastrar(nome: str, telefone: str, email: str,
 
     autenticarCliente(cliente)
     cliente.settimeout(TIMEOUT)
-    print(f"\"{nome}\" \"{telefone}\" \"{email}\" \"{login}\" \"{senha}\"")
+    print(f"\"{nome}\" \"{telefone}\" \"{email}\" \"{senha}\"")
 
     # Envia o cadastro se o servidor responder corretamente
     cliente.send(RESPOSTA_SOLICITACAO_CADASTRO.encode())
     if cliente.recv(LARGURA_DADOS).decode() == RESPOSTA_SOLICITACAO_CADASTRO:
         cliente.send(
-            f"\"{nome}\" \"{telefone}\" \"{email}\" \"{login}\" \"{senha}\"".encode())
-        resp = cliente.recv(LARGURA_DADOS).decode()
+            f"\"{nome}\" \"{telefone}\" \"{email}\" \"{senha}\"".encode())
+        try:
+            resp = cliente.recv(LARGURA_DADOS).decode()
+        except TimeoutError:
+            return 2
         if resp == RESPOSTA_USUARIO_JA_CADASTRADO:
             print("Usuário já cadastrado")
             cliente.close()
@@ -136,4 +139,4 @@ if __name__ == "__main__":
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     cliente.connect((SERVERIP, SERVERPORT))
     cadastrar("Gabriel", "23231",
-              "example@gmail.com", "Wrecking2", "234")
+              "example@gmail.com", "234")
