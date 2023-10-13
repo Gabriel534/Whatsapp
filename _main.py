@@ -4,13 +4,28 @@ from PySide6.QtGui import QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout,
     QHBoxLayout, QScrollArea, QStatusBar)
-from variaveis import ICON
+from variaveis import ICON, ICON_MAIS, ICON_LIGACAO, ICON_X
 from interface import Ui_MainWindow
 
 
 class Main(QMainWindow, Ui_MainWindow):
     def __init__(self, dados: dict) -> None:
         super().__init__()
+
+        # Cria uma ToolBar
+        self.toolBar = self.addToolBar("toolBar")
+        novoContato = QPushButton()
+        novoContato.setIcon(QIcon(str(ICON_MAIS)))
+
+        novaLigacao = QPushButton()
+        novaLigacao.setIcon(QIcon(str(ICON_LIGACAO)))
+
+        removerContato = QPushButton()
+        removerContato.setIcon(QIcon(str(ICON_X)))
+
+        self.toolBar.addWidget(novoContato)
+        self.toolBar.addWidget(novaLigacao)
+        self.toolBar.addWidget(removerContato)
 
         self.setWindowTitle("Whatsapp2")
 
@@ -89,7 +104,7 @@ class ItemChat(QWidget):
 if __name__ == "__main__":
     from sys import argv
     app = QApplication(argv)
-    window = Main({"Login": "Teste"})
+    window = Main({"Nome": "Teste"})
     window.show()
     app.setWindowIcon(QIcon(str(ICON)))
     app.exec()
