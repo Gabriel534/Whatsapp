@@ -167,7 +167,7 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         if resp == 0:
             self.statusCadastroLabel.setText("Usuário já cadastrado")
         elif resp == 1:
-            self.statusCadastroLabel.setText("Cadastro bem sucedido")
+            self.statusCadastroLabel.setText("Cadastro bem sucedido!")
         elif resp == 2:
             self.statusCadastroLabel.setText(
                 "Erro de conexão")
@@ -199,7 +199,7 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
             return False
 
         # Verifica se o email é valido
-        expressao = re.compile(r"""^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0wd-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$""")
+        expressao = re.compile(r"""^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$""")
         email = re.findall(expressao, dados["email"].text())
         if email == [] or len(email) != 1:
             self.statusCadastroLabel.setText("Email inválido")
@@ -210,6 +210,34 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
             self.labelSenha2.setStyleSheet("color: red;")
             self.labelSenha.setStyleSheet("color: red;")
             self.statusCadastroLabel.setText("As duas senhas não são iguais")
+            return False
+
+        """
+        Requisitos de senha:
+        - Conter no mínimo oito caracteres;
+
+        - Obedecer três dos quatro requisitos: 
+            1- letras maiúsculas (A-Z); 
+            2- letras minúsculas (a-z); 
+            3- números; 
+            4- caracteres não alfabéticos ($, &, %, @).
+                """
+        if len(dados["senha"].text()) < 8:
+            self.labelSenha2.setStyleSheet("color: red;")
+            self.labelSenha.setStyleSheet("color: red;")
+            self.statusCadastroLabel.setText("A senha deve conter no mínimo \
+8 caracteres")
+            return False
+
+        # Regex que valida senha
+        requisitos = re.findall(
+            r'(?=.*[}{,.^?~%=+\-_\/*\-+.\|])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}', dados["senha"].text())
+
+        if requisitos == []:
+            self.labelSenha2.setStyleSheet("color: red;")
+            self.labelSenha.setStyleSheet("color: red;")
+            self.statusCadastroLabel.setText(
+                "A senha deve conter uma letra, um número e um caractere \nespecial no mínimo")
             return False
 
         return True

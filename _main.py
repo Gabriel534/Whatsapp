@@ -4,7 +4,8 @@ from PySide6.QtGui import QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout,
     QHBoxLayout, QScrollArea, QStatusBar)
-from variaveis import ICON, ICON_MAIS, ICON_LIGACAO, ICON_X
+from variaveis import (ICON, ICON_MAIS, ICON_LIGACAO,
+                       ICON_X, ICON_BLOQUEIO, ICON_CONFIGURACAO)
 from interface import Ui_MainWindow
 
 
@@ -12,24 +13,38 @@ class Main(QMainWindow, Ui_MainWindow):
     def __init__(self, dados: dict) -> None:
         super().__init__()
 
+        self.setupUi(self)
+
         # Cria uma ToolBar
         self.toolBar = self.addToolBar("toolBar")
+
         novoContato = QPushButton()
         novoContato.setIcon(QIcon(str(ICON_MAIS)))
+        novoContato.clicked.connect(self.novoContato)
+
+        removerContato = QPushButton()
+        removerContato.setIcon(QIcon(str(ICON_X)))
+        removerContato.clicked.connect(self.removerContato)
+
+        bloquearContato = QPushButton()
+        bloquearContato.setIcon(QIcon(str(ICON_BLOQUEIO)))
+        bloquearContato.clicked.connect(self.bloquearContato)
 
         novaLigacao = QPushButton()
         novaLigacao.setIcon(QIcon(str(ICON_LIGACAO)))
 
-        removerContato = QPushButton()
-        removerContato.setIcon(QIcon(str(ICON_X)))
+        configuracao = QPushButton()
+        configuracao.setIcon(QIcon(str(ICON_CONFIGURACAO)))
+        configuracao.clicked.connect(self.bloquearContato)
 
         self.toolBar.addWidget(novoContato)
-        self.toolBar.addWidget(novaLigacao)
         self.toolBar.addWidget(removerContato)
+        self.toolBar.addWidget(bloquearContato)
+        self.toolBar.addWidget(novaLigacao)
+        self.toolBar.addWidget(configuracao)
 
         self.setWindowTitle("Whatsapp2")
 
-        self.setupUi(self)
         self.dados = dados
         # Remove a moldura do scroll area
         # self.Chats.setFrameShape(QScrollArea.Shape.NoFrame)
@@ -45,9 +60,6 @@ class Main(QMainWindow, Ui_MainWindow):
         layoutChat.setAlignment(Qt.AlignmentFlag.AlignTop)
         layoutChat.setSizeConstraint(layoutChat.SizeConstraint.SetMaximumSize)
 
-        # Teste de itemChat
-        layoutChat.addWidget(ItemChat("Gabriel Sampaio Santos", "sc", "sfs"))
-
         self.Chats.setLayout(layoutChat)
 
         layoutConversa = QVBoxLayout()
@@ -55,6 +67,15 @@ class Main(QMainWindow, Ui_MainWindow):
 
         layoutConversa.addWidget(QLabel("A"))
         self.Conversa.setLayout(layoutConversa)
+
+    def novoContato(self):
+        ...
+
+    def removerContato(self):
+        ...
+
+    def bloquearContato(self):
+        ...
 
 
 class ItemChat(QWidget):
@@ -104,7 +125,8 @@ class ItemChat(QWidget):
 if __name__ == "__main__":
     from sys import argv
     app = QApplication(argv)
-    window = Main({"Nome": "Teste"})
+    window = Main({'Id': 1, 'Senha': '5', 'Nome': '1', 'Email': '3', 'Telefone': '2',
+                  'IP': '127.0.0.1', 'DataHoraUltimoLogin': '2023-10-12 21:21:11.722339'})
     window.show()
     app.setWindowIcon(QIcon(str(ICON)))
     app.exec()

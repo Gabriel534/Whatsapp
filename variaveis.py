@@ -9,6 +9,8 @@ ICON_VOLTAR = DATA / "voltar.png"
 ICON_MAIS = DATA / "+.png"
 ICON_LIGACAO = DATA / "ligacao.png"
 ICON_X = DATA / "x.png"
+ICON_BLOQUEIO = DATA / "bloquear.png"
+ICON_CONFIGURACAO = DATA / "configuracao.png"
 
 TIMEOUT = 2
 
