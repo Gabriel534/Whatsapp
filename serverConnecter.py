@@ -7,7 +7,13 @@ from variaveis import (SERVERIP, SERVERPORT, LARGURA_DADOS,
                        RESPOSTA_SENHA_INCORRETA,
                        RESPOSTA_SOLICITACAO_CADASTRO,
                        RESPOSTA_USUARIO_JA_CADASTRADO,
-                       RESPOSTA_CADASTRO_BEM_SUCEDIDO, TIMEOUT)
+                       RESPOSTA_CADASTRO_BEM_SUCEDIDO, TIMEOUT,
+                       RESPOSTA_CADASTRO_INVALIDO,
+                       RESPOSTA_SOLICITACAO_NOVO_CONTATO,
+                       RESPOSTA_CONTATO_INVALIDO,
+                       RESPOSTA_CADASTRO_CONTATO_REALIZADO,
+                       RESPOSTA_CONTATO_JA_EXISTENTE,
+                       RESPOSTA_CONTATO_NAO_EXISTE)
 import pickle
 
 
@@ -47,7 +53,9 @@ def autenticarCliente(cliente):
 
 
 def login(email: str, senha: str, statusLabel: QLabel | None = None) -> dict | int | None:
-    """ Envia o email e senha se o servidor responder corretamente
+    """ 
+    Envia os dados do usuário do servidor em forma de dicionário 
+    caso usuário e senha estejam corretos
     Retorna 0 se houve erro na comunicação com o servidor
     retorna 1 caso a senha estar incorreta
     retorna None caso o email esteja incorreto
@@ -89,6 +97,7 @@ def cadastrar(nome: str, telefone: str, email: str,
               senha: str, statusLabel: QLabel | None = None) -> int:
     """
     Esta função manda uma solicitação ao servidor para o cadastro de um usuário
+    Caso o cadastro recebido pelo servidor for inválido retorna 3
     Caso o cadastro for mal sucedido, a função retornará 2
     Caso seja bem sucedido retornará 1
     Caso o usuário já esteja cadastrado, ele retornará 0
@@ -118,6 +127,9 @@ def cadastrar(nome: str, telefone: str, email: str,
             print("Cadastro bem sucedido")
             cliente.close()
             return 1
+        elif resp == RESPOSTA_CADASTRO_INVALIDO:
+            print("Cadastro inválido")
+            return 3
         else:
             print("Erro desconhecido")
             cliente.close()
@@ -127,16 +139,52 @@ def cadastrar(nome: str, telefone: str, email: str,
     return 0
 
 
+def adicionarContato(nome: str, email: str, statusLabel: QLabel | None = None) -> int:
+    """
+    Esta função manda uma solicitação ao servidor para adicionar um contato ao usuário
+    Caso a adição do contato for mal sucedido, a função retornará 2
+    Caso seja bem sucedido retornará 1
+    Caso o contato já esteja cadastrado, ele retornará 0
+    """
+    cliente = conectar(statusLabel)
+
+    if cliente is None:
+        return 2
+
+    autenticarCliente(cliente)
+
+    cliente.send(RESPOSTA_SOLICITACAO_NOVO_CONTATO.encode())
+
+    dadoRecebido = cliente.recv(LARGURA_DADOS).decode()
+    if dadoRecebido == RESPOSTA_SOLICITACAO_CADASTRO:
+        cliente.send(f"\"{nome}\" \"{email}\"".encode())
+    elif dadoRecebido == RESPOSTA_CONTATO_INVALIDO:
+        return 2
+    elif dadoRecebido == RESPOSTA_CADASTRO_CONTATO_REALIZADO:
+        return 1
+    elif dadoRecebido == RESPOSTA_CONTATO_JA_EXISTENTE:
+        return 0
+    elif dadoRecebido == RESPOSTA_CONTATO_NAO_EXISTE:
+        return 2
+    else:
+        return 2
+
+    print("Erro sincronização")
+    cliente.close()
+    return 2
+
+
 if __name__ == "__main__":
     # Testes de login
 
-    print(login("Gabriel123", "123"))
-    print(login("Gabriel58", "123"))
-    print(login("Gabriel123", "13"))
+    # print(login("Gabriel123", "123"))
+    # print(login("Gabriel58", "123"))
+    # print(login("Gabriel123", "13"))
 
     # Testes cadastro
 
-    cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    cliente.connect((SERVERIP, SERVERPORT))
-    cadastrar("Gabriel", "23231",
-              "example@gmail.com", "234")
+    # cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # cliente.connect((SERVERIP, SERVERPORT))
+    # cadastrar("Gabriel", "23231",
+    #           "example@gmail.com", "234")
+    ...

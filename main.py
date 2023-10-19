@@ -62,7 +62,7 @@ class UserLogin(QMainWindow):
 
     def logar(self):
         if self.lineEditEmail.text() == "" or self.lineEditSenha.text() == "":
-            self.statusLabel.setText("Login e/ou senha não preenchidos")
+            self.statusLabel.setText("Email e/ou senha não preenchidos")
             return
         try:
             dados = login(self.lineEditEmail.text(),
@@ -71,7 +71,7 @@ class UserLogin(QMainWindow):
             self.statusLabel.setText("Erro na validação do cliente")
             return
         if dados is None:
-            self.statusLabel.setText("Login incorreto!")
+            self.statusLabel.setText("Email incorreto!")
         elif dados == 0:
             self.statusLabel.setText("Erro ao se comunicar com o servidor")
         elif dados == 1:
@@ -171,6 +171,9 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         elif resp == 2:
             self.statusCadastroLabel.setText(
                 "Erro de conexão")
+        elif resp == 3:
+            self.statusCadastroLabel.setText(
+                "Cadastro Inválido")
 
     def validaDados(self, dados: dict[str, QLineEdit]) -> bool:
         """
@@ -180,9 +183,27 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         do statusBar
         """
 
-        naoPreenchidoBool: bool = False
+        # Verifica se os campos contém aspas e caso tenha, impede de ser
+        # utilizado
+        contemAspas: bool = False
+
+        for i, j in dados.items():
+            if "\"" in j.text() != -1:
+                getattr(self, "label" + i.capitalize()
+                        ).setStyleSheet("color: red;")
+                contemAspas = True
+            else:
+                getattr(self, "label" + i.capitalize()
+                        ).setStyleSheet("color: black;")
+
+        if contemAspas is True:
+            self.statusCadastroLabel.setText(
+                "Nos campos não deve conter aspas")
+            return False
 
         # Verifica se todos os dados foram preenchidos
+        naoPreenchidoBool: bool = False
+
         for key, value in dados.items():
             if key == "telefone":
                 continue
@@ -221,7 +242,9 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
             2- letras minúsculas (a-z); 
             3- números; 
             4- caracteres não alfabéticos ($, &, %, @).
+            5- não pode conter aspas
                 """
+
         if len(dados["senha"].text()) < 8:
             self.labelSenha2.setStyleSheet("color: red;")
             self.labelSenha.setStyleSheet("color: red;")
@@ -231,13 +254,15 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
 
         # Regex que valida senha
         requisitos = re.findall(
-            r'(?=.*[}{,.^?~%=+\-_\/*\-+.\|])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}', dados["senha"].text())
+            r'(?=.*[}{,.^?~%=+\-_\/*\-+.\|])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}',
+            dados["senha"].text())
 
         if requisitos == []:
             self.labelSenha2.setStyleSheet("color: red;")
             self.labelSenha.setStyleSheet("color: red;")
             self.statusCadastroLabel.setText(
-                "A senha deve conter uma letra, um número e um caractere \nespecial no mínimo")
+                "A senha deve conter uma letra, um número e um caractere \n\
+especial no mínimo")
             return False
 
         return True
@@ -247,4 +272,5 @@ if __name__ == "__main__":
     app = QApplication()
     window = UserLogin()
     window.show()
+    app.setWindowIcon(QIcon(str(ICON)))
     app.exec()
