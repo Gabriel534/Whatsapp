@@ -6,8 +6,8 @@ from PySide6.QtWidgets import (
     QPushButton, QHBoxLayout, QStatusBar)
 from PySide6.QtGui import QIcon, QKeyEvent
 from variaveis import (TAMANHO_MAXIMO_LOGIN, TAMANHO_MAXIMO_SENHA,
-                       ICON, SERVERIP, SERVERPORT, ICON_VOLTAR,
-                       RESPOSTA_SOLICITACAO_LOGIN)
+                       ICON, ICON_VOLTAR, EXPRESSAO_REGULAR_VALIDA_EMAIL,
+                       EXPRESSAO_REGULAR_VALIDA_SENHA)
 from serverConnecter import login, cadastrar
 from _main import Main
 from telaCadastro import Ui_MainWindow
@@ -143,7 +143,7 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
 
     def cadastrar(self) -> None:
         """
-        Pegas as informações de cadastro e envia ao servidor, além de validar 
+        Pegas as informações de cadastro e envia ao servidor, além de validar
         as informações dos campos
         """
         dados: dict[str, QLineEdit]
@@ -179,7 +179,7 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         """
         Valida os dados recebidos dos line edit
         Se a validação for verdadeira, ele retorna true
-        Caso não for verdadeira, retorna false e expõe o erro no statusLabel 
+        Caso não for verdadeira, retorna false e expõe o erro no statusLabel
         do statusBar
         """
 
@@ -220,8 +220,8 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
             return False
 
         # Verifica se o email é valido
-        expressao = re.compile(r"""^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$""")
-        email = re.findall(expressao, dados["email"].text())
+        email = re.findall(EXPRESSAO_REGULAR_VALIDA_EMAIL,
+                           dados["email"].text())
         if email == [] or len(email) != 1:
             self.statusCadastroLabel.setText("Email inválido")
             return False
@@ -237,10 +237,10 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
         Requisitos de senha:
         - Conter no mínimo oito caracteres;
 
-        - Obedecer três dos quatro requisitos: 
-            1- letras maiúsculas (A-Z); 
-            2- letras minúsculas (a-z); 
-            3- números; 
+        - Obedecer três dos quatro requisitos:
+            1- letras maiúsculas (A-Z);
+            2- letras minúsculas (a-z);
+            3- números;
             4- caracteres não alfabéticos ($, &, %, @).
             5- não pode conter aspas
                 """
@@ -254,8 +254,7 @@ class Cadastrar(QMainWindow, Ui_MainWindow):
 
         # Regex que valida senha
         requisitos = re.findall(
-            r'(?=.*[}{,.^?~%=+\-_\/*\-+.\|])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}',
-            dados["senha"].text())
+            EXPRESSAO_REGULAR_VALIDA_SENHA, dados["senha"].text())
 
         if requisitos == []:
             self.labelSenha2.setStyleSheet("color: red;")

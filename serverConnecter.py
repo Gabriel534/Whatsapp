@@ -13,7 +13,8 @@ from variaveis import (SERVERIP, SERVERPORT, LARGURA_DADOS,
                        RESPOSTA_CONTATO_INVALIDO,
                        RESPOSTA_CADASTRO_CONTATO_REALIZADO,
                        RESPOSTA_CONTATO_JA_EXISTENTE,
-                       RESPOSTA_CONTATO_NAO_EXISTE)
+                       RESPOSTA_CONTATO_NAO_EXISTE,
+                       RESPOSTA_CREDENCIAIS_INVALIDAS)
 import pickle
 
 
@@ -139,9 +140,10 @@ def cadastrar(nome: str, telefone: str, email: str,
     return 0
 
 
-def adicionarContato(nome: str, email: str, statusLabel: QLabel | None = None) -> int:
+def adicionarContato(nome: str, email: str, usuario: str, senha: str, statusLabel: QLabel | None = None) -> int:
     """
     Esta função manda uma solicitação ao servidor para adicionar um contato ao usuário
+    Caso as credenciais de login e senha foram inválidas, retorna 3
     Caso a adição do contato for mal sucedido, a função retornará 2
     Caso seja bem sucedido retornará 1
     Caso o contato já esteja cadastrado, ele retornará 0
@@ -156,18 +158,21 @@ def adicionarContato(nome: str, email: str, statusLabel: QLabel | None = None) -
     cliente.send(RESPOSTA_SOLICITACAO_NOVO_CONTATO.encode())
 
     dadoRecebido = cliente.recv(LARGURA_DADOS).decode()
-    if dadoRecebido == RESPOSTA_SOLICITACAO_CADASTRO:
-        cliente.send(f"\"{nome}\" \"{email}\"".encode())
-    elif dadoRecebido == RESPOSTA_CONTATO_INVALIDO:
-        return 2
-    elif dadoRecebido == RESPOSTA_CADASTRO_CONTATO_REALIZADO:
-        return 1
-    elif dadoRecebido == RESPOSTA_CONTATO_JA_EXISTENTE:
-        return 0
-    elif dadoRecebido == RESPOSTA_CONTATO_NAO_EXISTE:
-        return 2
-    else:
-        return 2
+    if dadoRecebido == RESPOSTA_SOLICITACAO_NOVO_CONTATO:
+        cliente.send(
+            f"\"{nome}\" \"{email}\" \"{usuario}\" \"{senha}\"".encode())
+
+        dadoRecebido = cliente.recv(LARGURA_DADOS).decode()
+        if dadoRecebido == RESPOSTA_CONTATO_INVALIDO:
+            return 2
+        elif dadoRecebido == RESPOSTA_CADASTRO_CONTATO_REALIZADO:
+            return 1
+        elif dadoRecebido == RESPOSTA_CONTATO_JA_EXISTENTE:
+            return 0
+        elif dadoRecebido == RESPOSTA_CONTATO_NAO_EXISTE:
+            return 2
+        elif dadoRecebido == RESPOSTA_CREDENCIAIS_INVALIDAS:
+            return 3
 
     print("Erro sincronização")
     cliente.close()
@@ -187,4 +192,15 @@ if __name__ == "__main__":
     # cliente.connect((SERVERIP, SERVERPORT))
     # cadastrar("Gabriel", "23231",
     #           "example@gmail.com", "234")
-    ...
+
+    # Cria o usuario de testes
+    cadastrar("Gabriel", "-", "g@gmail.co", "1234!@#A")
+
+    # Teste credenciais incorretas retorna 3
+    print(adicionarContato("Gabriel", "g@gmail.co", "g@gmail.cosdaasd", "1234!@#A"))
+
+    # Teste contato não existe retorna 2
+    print(adicionarContato("Gabriel", "sdasdasda", "g@gmail.co", "1234!@#A"))
+
+    # Teste adicionar a si mesmo como contato, se já existir retorna 0
+    print(adicionarContato("Gabriel", "g@gmail.co", "g@gmail.co", "1234!@#A"))
