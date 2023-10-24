@@ -3,10 +3,10 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout,
-    QHBoxLayout, QScrollArea, QStatusBar)
-from variaveis import (ICON, ICON_MAIS, ICON_LIGACAO,
-                       ICON_X, ICON_BLOQUEIO, ICON_CONFIGURACAO)
+    QHBoxLayout, QScrollArea, QStatusBar, QDialog)
+from variaveis import (ICON)
 from interface import Ui_MainWindow
+from AdicionarContato import Ui_Dialog
 
 
 class Main(QMainWindow, Ui_MainWindow):
@@ -14,34 +14,6 @@ class Main(QMainWindow, Ui_MainWindow):
         super().__init__()
 
         self.setupUi(self)
-
-        # Cria uma ToolBar
-        self.toolBar = self.addToolBar("toolBar")
-
-        novoContato = QPushButton()
-        novoContato.setIcon(QIcon(str(ICON_MAIS)))
-        novoContato.clicked.connect(self.novoContato)
-
-        removerContato = QPushButton()
-        removerContato.setIcon(QIcon(str(ICON_X)))
-        removerContato.clicked.connect(self.removerContato)
-
-        bloquearContato = QPushButton()
-        bloquearContato.setIcon(QIcon(str(ICON_BLOQUEIO)))
-        bloquearContato.clicked.connect(self.bloquearContato)
-
-        novaLigacao = QPushButton()
-        novaLigacao.setIcon(QIcon(str(ICON_LIGACAO)))
-
-        configuracao = QPushButton()
-        configuracao.setIcon(QIcon(str(ICON_CONFIGURACAO)))
-        configuracao.clicked.connect(self.bloquearContato)
-
-        self.toolBar.addWidget(novoContato)
-        self.toolBar.addWidget(removerContato)
-        self.toolBar.addWidget(bloquearContato)
-        self.toolBar.addWidget(novaLigacao)
-        self.toolBar.addWidget(configuracao)
 
         self.setWindowTitle("Whatsapp2")
 
@@ -68,8 +40,11 @@ class Main(QMainWindow, Ui_MainWindow):
         layoutConversa.addWidget(QLabel("A"))
         self.Conversa.setLayout(layoutConversa)
 
+        self.pushButtonAdicionarContato.clicked.connect(self.novoContato)
+
     def novoContato(self):
-        ...
+        self.tela = Ui_Dialog()
+        self.tela.setupUi(QDialog())
 
     def removerContato(self):
         ...

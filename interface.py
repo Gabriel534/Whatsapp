@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'interface.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.6.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(816, 582)
+        MainWindow.resize(818, 607)
         MainWindow.setMinimumSize(QSize(0, 0))
         MainWindow.setStyleSheet(u" QScrollArea {\n"
 "                border: 1px solid #d3d3d3;\n"
@@ -59,10 +59,53 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.widget = QWidget(self.centralwidget)
         self.widget.setObjectName(u"widget")
+        sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setMinimumSize(QSize(0, 42))
         self.verticalLayout_2 = QVBoxLayout(self.widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.pushButtonAdicionarContato = QPushButton(self.widget)
+        self.pushButtonAdicionarContato.setObjectName(u"pushButtonAdicionarContato")
+        icon = QIcon()
+        icon.addFile(u"data/+.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButtonAdicionarContato.setIcon(icon)
 
-        self.horizontalLayout.addWidget(self.widget, 0, Qt.AlignVCenter)
+        self.verticalLayout_2.addWidget(self.pushButtonAdicionarContato)
+
+        self.pushButtonRemoverContato = QPushButton(self.widget)
+        self.pushButtonRemoverContato.setObjectName(u"pushButtonRemoverContato")
+        icon1 = QIcon()
+        icon1.addFile(u"data/X.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButtonRemoverContato.setIcon(icon1)
+
+        self.verticalLayout_2.addWidget(self.pushButtonRemoverContato)
+
+        self.pushButtonBloquearContato = QPushButton(self.widget)
+        self.pushButtonBloquearContato.setObjectName(u"pushButtonBloquearContato")
+        icon2 = QIcon()
+        icon2.addFile(u"data/bloquear.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButtonBloquearContato.setIcon(icon2)
+
+        self.verticalLayout_2.addWidget(self.pushButtonBloquearContato)
+
+        self.pushButtonConfiguracao = QPushButton(self.widget)
+        self.pushButtonConfiguracao.setObjectName(u"pushButtonConfiguracao")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.pushButtonConfiguracao.sizePolicy().hasHeightForWidth())
+        self.pushButtonConfiguracao.setSizePolicy(sizePolicy1)
+        icon3 = QIcon()
+        icon3.addFile(u"data/configuracao.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButtonConfiguracao.setIcon(icon3)
+
+        self.verticalLayout_2.addWidget(self.pushButtonConfiguracao, 0, Qt.AlignBottom)
+
+
+        self.horizontalLayout.addWidget(self.widget)
 
         self.verticalLayout_5 = QVBoxLayout()
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -88,11 +131,11 @@ class Ui_MainWindow(object):
 
         self.Chats = QScrollArea(self.centralwidget)
         self.Chats.setObjectName(u"Chats")
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Chats.sizePolicy().hasHeightForWidth())
-        self.Chats.setSizePolicy(sizePolicy)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.Chats.sizePolicy().hasHeightForWidth())
+        self.Chats.setSizePolicy(sizePolicy2)
         self.Chats.setMinimumSize(QSize(250, 500))
         self.Chats.setMaximumSize(QSize(16777215, 500))
         font = QFont()
@@ -134,29 +177,29 @@ class Ui_MainWindow(object):
 
         self.Conversa = QScrollArea(self.widget_2)
         self.Conversa.setObjectName(u"Conversa")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.MinimumExpanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.Conversa.sizePolicy().hasHeightForWidth())
-        self.Conversa.setSizePolicy(sizePolicy1)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.MinimumExpanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.Conversa.sizePolicy().hasHeightForWidth())
+        self.Conversa.setSizePolicy(sizePolicy3)
         self.Conversa.setMinimumSize(QSize(500, 400))
         self.Conversa.setMaximumSize(QSize(16777215, 16777215))
         self.Conversa.setStyleSheet(u" QScrollArea {\\n                border: 1px solid #d3d3d3;\\n                border-radius: 8px;\\n                background-color: #f0f0f0;\\n            }\\n\\n            QScrollArea > QWidget {\\n                background-color: transparent;\\n            }\\n\\n            QScrollBar:vertical {\\n                width: 12px;\\n            }\\n\\n            QScrollBar::handle:vertical {\\n                background: #d3d3d3;\\n                border-radius: 6px;\\n            }\\n\\n            QScrollBar::handle:vertical:hover {\\n                background: #b0b0b0;\\n            }\\n\\n            QScrollBar::add-line:vertical,\\n            QScrollBar::sub-line:vertical {\\n                border: none;\\n                background: transparent;}")
         self.Conversa.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 498, 429))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 498, 454))
         self.Conversa.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout.addWidget(self.Conversa)
 
         self.textEdit = QTextEdit(self.widget_2)
         self.textEdit.setObjectName(u"textEdit")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.textEdit.sizePolicy().hasHeightForWidth())
-        self.textEdit.setSizePolicy(sizePolicy2)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.textEdit.sizePolicy().hasHeightForWidth())
+        self.textEdit.setSizePolicy(sizePolicy4)
         self.textEdit.setMaximumSize(QSize(16777215, 26))
         self.textEdit.setStyleSheet(u"background-color: rgb(241, 240, 255);")
 
@@ -168,7 +211,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 816, 22))
+        self.menubar.setGeometry(QRect(0, 0, 818, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -181,6 +224,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.pushButtonAdicionarContato.setText("")
+        self.pushButtonRemoverContato.setText("")
+        self.pushButtonBloquearContato.setText("")
+        self.pushButtonConfiguracao.setText("")
         self.User.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Pessoal Tal", None))
     # retranslateUi
