@@ -16,15 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QHBoxLayout, QLabel,
-    QMainWindow, QMenuBar, QPushButton, QScrollArea,
-    QSizePolicy, QStatusBar, QTextEdit, QVBoxLayout,
-    QWidget)
+    QLineEdit, QMainWindow, QMenuBar, QPushButton,
+    QScrollArea, QSizePolicy, QStatusBar, QTextEdit,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(818, 607)
+        MainWindow.resize(846, 607)
         MainWindow.setMinimumSize(QSize(0, 0))
         MainWindow.setStyleSheet(u" QScrollArea {\n"
 "                border: 1px solid #d3d3d3;\n"
@@ -91,6 +91,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.pushButtonBloquearContato)
 
+        self.pushButtonAtualizar = QPushButton(self.widget)
+        self.pushButtonAtualizar.setObjectName(u"pushButtonAtualizar")
+        icon3 = QIcon()
+        icon3.addFile(u"data/atualizar.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButtonAtualizar.setIcon(icon3)
+
+        self.verticalLayout_2.addWidget(self.pushButtonAtualizar)
+
         self.pushButtonConfiguracao = QPushButton(self.widget)
         self.pushButtonConfiguracao.setObjectName(u"pushButtonConfiguracao")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
@@ -98,9 +106,9 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.pushButtonConfiguracao.sizePolicy().hasHeightForWidth())
         self.pushButtonConfiguracao.setSizePolicy(sizePolicy1)
-        icon3 = QIcon()
-        icon3.addFile(u"data/configuracao.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButtonConfiguracao.setIcon(icon3)
+        icon4 = QIcon()
+        icon4.addFile(u"data/configuracao.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButtonConfiguracao.setIcon(icon4)
 
         self.verticalLayout_2.addWidget(self.pushButtonConfiguracao, 0, Qt.AlignBottom)
 
@@ -129,6 +137,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.User)
 
+        self.lineEdit = QLineEdit(self.centralwidget)
+        self.lineEdit.setObjectName(u"lineEdit")
+        self.lineEdit.setMaxLength(22)
+
+        self.verticalLayout_5.addWidget(self.lineEdit)
+
         self.Chats = QScrollArea(self.centralwidget)
         self.Chats.setObjectName(u"Chats")
         sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
@@ -146,12 +160,15 @@ class Ui_MainWindow(object):
         self.Chats.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.Chats.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
         self.Chats.setWidgetResizable(True)
-        self.scrollAreaWidgetContents_2 = QWidget()
-        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 248, 498))
-        self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidgetContents_2)
+        self.QWidgetListaConversas = QWidget()
+        self.QWidgetListaConversas.setObjectName(u"QWidgetListaConversas")
+        self.QWidgetListaConversas.setGeometry(QRect(0, 0, 248, 498))
+        sizePolicy1.setHeightForWidth(self.QWidgetListaConversas.sizePolicy().hasHeightForWidth())
+        self.QWidgetListaConversas.setSizePolicy(sizePolicy1)
+        self.QWidgetListaConversas.setMinimumSize(QSize(50, 200))
+        self.verticalLayout_3 = QVBoxLayout(self.QWidgetListaConversas)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.Chats.setWidget(self.scrollAreaWidgetContents_2)
+        self.Chats.setWidget(self.QWidgetListaConversas)
 
         self.verticalLayout_5.addWidget(self.Chats)
 
@@ -211,7 +228,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 818, 22))
+        self.menubar.setGeometry(QRect(0, 0, 846, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -227,8 +244,10 @@ class Ui_MainWindow(object):
         self.pushButtonAdicionarContato.setText("")
         self.pushButtonRemoverContato.setText("")
         self.pushButtonBloquearContato.setText("")
+        self.pushButtonAtualizar.setText("")
         self.pushButtonConfiguracao.setText("")
         self.User.setText("")
+        self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Pesquisar", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Pessoal Tal", None))
     # retranslateUi
 

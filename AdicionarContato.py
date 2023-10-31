@@ -15,57 +15,70 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QVBoxLayout, QWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(400, 206)
-        self.verticalLayout = QVBoxLayout(Dialog)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        if not MainWindow.objectName():
+            MainWindow.setObjectName(u"MainWindow")
+        MainWindow.resize(334, 207)
+        self.centralwidget = QWidget(MainWindow)
+        self.centralwidget.setObjectName(u"centralwidget")
+        self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label_3 = QLabel(Dialog)
+        self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
 
         self.verticalLayout.addWidget(self.label_3, 0, Qt.AlignHCenter)
 
-        self.label = QLabel(Dialog)
+        self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
 
         self.verticalLayout.addWidget(self.label)
 
-        self.lineEdit = QLineEdit(Dialog)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.lineEditNome = QLineEdit(self.centralwidget)
+        self.lineEditNome.setObjectName(u"lineEditNome")
+        self.lineEditNome.setMaxLength(100)
 
-        self.verticalLayout.addWidget(self.lineEdit)
+        self.verticalLayout.addWidget(self.lineEditNome)
 
-        self.label_2 = QLabel(Dialog)
+        self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
 
         self.verticalLayout.addWidget(self.label_2)
 
-        self.lineEdit_2 = QLineEdit(Dialog)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.lineEditEmail = QLineEdit(self.centralwidget)
+        self.lineEditEmail.setObjectName(u"lineEditEmail")
+        self.lineEditEmail.setMaxLength(100)
 
-        self.verticalLayout.addWidget(self.lineEdit_2)
+        self.verticalLayout.addWidget(self.lineEditEmail)
 
-        self.pushButton = QPushButton(Dialog)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButtonAdicionarContato = QPushButton(self.centralwidget)
+        self.pushButtonAdicionarContato.setObjectName(u"pushButtonAdicionarContato")
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.pushButtonAdicionarContato)
 
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(MainWindow)
+        self.menubar.setObjectName(u"menubar")
+        self.menubar.setGeometry(QRect(0, 0, 334, 22))
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(MainWindow)
+        self.statusbar.setObjectName(u"statusbar")
+        MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(MainWindow)
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.label_3.setText(QCoreApplication.translate("Dialog", u"Novo Contato", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"Nome*", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"Email*", None))
-        self.pushButton.setText(QCoreApplication.translate("Dialog", u"Adicionar", None))
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Novo Contato", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Nome*", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Email*", None))
+        self.pushButtonAdicionarContato.setText(QCoreApplication.translate("MainWindow", u"Adicionar", None))
     # retranslateUi
 

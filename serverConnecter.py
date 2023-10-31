@@ -14,7 +14,8 @@ from variaveis import (SERVERIP, SERVERPORT, LARGURA_DADOS,
                        RESPOSTA_CADASTRO_CONTATO_REALIZADO,
                        RESPOSTA_CONTATO_JA_EXISTENTE,
                        RESPOSTA_CONTATO_NAO_EXISTE,
-                       RESPOSTA_CREDENCIAIS_INVALIDAS)
+                       RESPOSTA_CREDENCIAIS_INVALIDAS,
+                       RESPOSTA_RESGATAR_CONTATOS)
 import pickle
 
 
@@ -143,6 +144,8 @@ def cadastrar(nome: str, telefone: str, email: str,
 def adicionarContato(nome: str, email: str, usuario: str, senha: str, statusLabel: QLabel | None = None) -> int:
     """
     Esta função manda uma solicitação ao servidor para adicionar um contato ao usuário
+    Caso o servidor esteja indisponível retorna 5
+    Caso o contato esteja inválido internamente retorna 4
     Caso as credenciais de login e senha foram inválidas, retorna 3
     Caso a adição do contato for mal sucedido, a função retornará 2
     Caso seja bem sucedido retornará 1
@@ -151,7 +154,7 @@ def adicionarContato(nome: str, email: str, usuario: str, senha: str, statusLabe
     cliente = conectar(statusLabel)
 
     if cliente is None:
-        return 2
+        return 5
 
     autenticarCliente(cliente)
 
@@ -164,7 +167,7 @@ def adicionarContato(nome: str, email: str, usuario: str, senha: str, statusLabe
 
         dadoRecebido = cliente.recv(LARGURA_DADOS).decode()
         if dadoRecebido == RESPOSTA_CONTATO_INVALIDO:
-            return 2
+            return 4
         elif dadoRecebido == RESPOSTA_CADASTRO_CONTATO_REALIZADO:
             return 1
         elif dadoRecebido == RESPOSTA_CONTATO_JA_EXISTENTE:
@@ -173,10 +176,51 @@ def adicionarContato(nome: str, email: str, usuario: str, senha: str, statusLabe
             return 2
         elif dadoRecebido == RESPOSTA_CREDENCIAIS_INVALIDAS:
             return 3
+    else:
+        return 5
 
     print("Erro sincronização")
     cliente.close()
     return 2
+
+
+def resgatarContatos(usuario: str, senha: str,
+                     statusLabel: QLabel | None = None) -> int | list[dict]:
+    """
+    Esta função manda uma solicitação ao servidor para resgatar os contatos do
+    usuário
+    Caso haja erro de comunicação com o servidor, retorna 3
+    Caso as credenciais forem inválidas, retorna 2
+    Caso seja bem sucedido retornará 1
+    Caso haja erro, retorna 0
+    """
+    cliente = conectar(statusLabel)
+
+    if cliente is None:
+        return 5
+
+    autenticarCliente(cliente)
+
+    cliente.send(RESPOSTA_RESGATAR_CONTATOS.encode())
+
+    dadoRecebido = cliente.recv(LARGURA_DADOS).decode()
+    if dadoRecebido == RESPOSTA_RESGATAR_CONTATOS:
+        cliente.send(f"\"{usuario}\" \"{senha}\"".encode())
+        # Recebe um possível dicionário ou resposta
+        resp = cliente.recv(LARGURA_DADOS)
+
+        try:
+            if resp.decode() == RESPOSTA_CREDENCIAIS_INVALIDAS:
+                return 2
+        except UnicodeDecodeError:
+            # Caso não for string, retorna os dados
+            print("Foi")
+            retorno = pickle.loads(resp)  # type: ignore
+            cliente.close()
+            return retorno
+
+    else:
+        return 3
 
 
 if __name__ == "__main__":
@@ -193,14 +237,17 @@ if __name__ == "__main__":
     # cadastrar("Gabriel", "23231",
     #           "example@gmail.com", "234")
 
-    # Cria o usuario de testes
-    cadastrar("Gabriel", "-", "g@gmail.co", "1234!@#A")
+    # # Cria o usuario de testes
+    # cadastrar("Gabriel", "-", "g@gmail.co", "1234!@#A")
 
-    # Teste credenciais incorretas retorna 3
-    print(adicionarContato("Gabriel", "g@gmail.co", "g@gmail.cosdaasd", "1234!@#A"))
+    # # Teste credenciais incorretas retorna 3
+    # print(adicionarContato("Gabriel", "g@gmail.co", "g@gmail.cosdaasd", "1234!@#A"))
 
-    # Teste contato não existe retorna 2
-    print(adicionarContato("Gabriel", "sdasdasda", "g@gmail.co", "1234!@#A"))
+    # # Teste contato não existe retorna 2
+    # print(adicionarContato("Gabriel", "sdasdasda", "g@gmail.co", "1234!@#A"))
 
-    # Teste adicionar a si mesmo como contato, se já existir retorna 0
-    print(adicionarContato("Gabriel", "g@gmail.co", "g@gmail.co", "1234!@#A"))
+    # # Teste adicionar a si mesmo como contato, se já existir retorna 0
+    # print(adicionarContato("Gabriel", "g@gmail.co", "g@gmail.co", "1234!@#A"))
+
+    # TEsta o resgate de contatos
+    print(resgatarContatos("g@gmail.com", "1234!@#A"))
