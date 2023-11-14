@@ -191,7 +191,7 @@ def resgatarContatos(usuario: str, senha: str,
     usuário
     Caso haja erro de comunicação com o servidor, retorna 3
     Caso as credenciais forem inválidas, retorna 2
-    Caso seja bem sucedido retornará 1
+    Caso seja bem sucedido retornará uma lista com dicionários de cada contato
     Caso haja erro, retorna 0
     """
     cliente = conectar(statusLabel)
@@ -215,7 +215,7 @@ def resgatarContatos(usuario: str, senha: str,
         except UnicodeDecodeError:
             # Caso não for string, retorna os dados
             print("Foi")
-            retorno = pickle.loads(resp)  # type: ignore
+            retorno: list[dict] = pickle.loads(resp)  # type: ignore
             cliente.close()
             return retorno
 

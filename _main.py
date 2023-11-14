@@ -47,11 +47,15 @@ class Main(QMainWindow, Ui_MainWindow):
         self.Conversa.setLayout(layoutConversa)
 
         # Adiciona as funcionalidades aos botões
-        self.pushButtonAtualizar.clicked.connect(self.atualizaListaContatos)
+        self.pushButtonContatos.clicked.connect(self.atualizaListaContatos)
         self.pushButtonAdicionarContato.clicked.connect(self.novoContato)
+        self.pushButtonConversas.clicked.connect(self.atualizaListaConversas)
 
         # Atualiza a lista de conversas
-        self.atualizaListaContatos()
+        self.atualizaListaConversas()
+
+    def atualizaListaConversas(self):
+        print("Implementar lista de conversas")
 
     def atualizaListaContatos(self):
         resposta: list[dict] | int = resgatarContatos(self.dados["Email"],
@@ -65,9 +69,13 @@ class Main(QMainWindow, Ui_MainWindow):
                 self.Chats.widget().layout().setAlignment(
                     Qt.AlignmentFlag.AlignTop)
                 self.Chats.widget().layout().addWidget(self.chatItens[-1])
-        else:
-            # -------------------------------------------------------------------------------------------------------------
-            print("Terminar AtualizaListaCOntatos")
+        elif resposta == 3:
+            self.statusBarLabel.setText("Erro de comunicação com o servidor")
+        elif resposta == 2:
+            self.statusBarLabel.setText(
+                "Credenciais inválidas! Favor fazer o login novamente")
+        elif resposta == 0:
+            self.statusBarLabel.setText("Erro desconhecido")
 
     def novoContato(self):
         self.tela = AdicionarContato(
